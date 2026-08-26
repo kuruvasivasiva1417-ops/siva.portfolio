@@ -64,8 +64,9 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       })
+      const result = await response.json()
 
-      if (!response.ok) throw new Error('Contact request failed')
+      if (!response.ok || result.success !== true) throw new Error(result.message || 'Contact request failed')
 
       form.reset()
       setSubmissionState('success')

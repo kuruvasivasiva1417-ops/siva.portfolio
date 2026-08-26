@@ -62,7 +62,7 @@ async function verifyMailConnection() {
 
 app.post('/api/contact', async (request, response) => {
   if (isRateLimited(request.ip)) {
-    return response.status(429).json({ error: 'Too many requests' })
+    return response.status(429).json({ success: false, message: 'Too many requests' })
   }
 
   const name = typeof request.body?.name === 'string' ? request.body.name.trim() : ''
@@ -70,7 +70,7 @@ app.post('/api/contact', async (request, response) => {
   const message = typeof request.body?.message === 'string' ? request.body.message.trim() : ''
 
   if (!name || name.length > 100 || !emailPattern.test(email) || email.length > 254 || !message || message.length > maxMessageLength) {
-    return response.status(400).json({ error: 'Invalid contact form data' })
+    return response.status(400).json({ success: false, message: 'Invalid contact form data' })
   }
 
   try {
@@ -83,7 +83,7 @@ app.post('/api/contact', async (request, response) => {
       text: `New Contact Form Message\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
     })
 
-    return response.status(200).json({ message: 'Message sent successfully' })
+    return response.status(200).json({ success: true, message: 'Message sent successfully' })
   } catch (error) {
     console.error('Contact email failed:', {
       code: error.code,
@@ -92,7 +92,7 @@ app.post('/api/contact', async (request, response) => {
       message: error.message,
       response: error.response,
     })
-    return response.status(500).json({ error: 'Unable to send message' })
+    return response.status(500).json({ success: false, message: 'Failed to send message' })
   }
 })
 
