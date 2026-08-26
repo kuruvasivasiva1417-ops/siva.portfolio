@@ -1,5 +1,18 @@
 # React + Vite
 
+## Contact form
+
+The contact form sends mail through the server-side API in `server.mjs`. Copy the values from `.env.example` into the local `.env` file and set your Gmail address, Gmail app password, and destination address. Do not commit `.env`.
+
+Install dependencies and start the frontend plus API together:
+
+```bash
+npm install
+npm run dev
+```
+
+The Vite frontend runs on `http://localhost:5173` and proxies `/api/contact` to the mail API on port `3001`. For production, build the frontend with `npm run build` and run the API with `npm start`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:
